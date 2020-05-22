@@ -241,41 +241,24 @@ public class RootUtils {
     }
 
     public static boolean isSAR() throws Exception {
-        boolean isSAR = false;
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.N){
-            BufferedReader mountsStream = null;
-            try {
-                mountsStream = new BufferedReader(new FileReader(MOUNTS_PATH));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        BufferedReader mountsStream;
+        mountsStream = new BufferedReader(new FileReader(MOUNTS_PATH));
+        List<Mount> lines = new ArrayList<>();
 
-            List<Mount> lines = new ArrayList<>();
-
-            assert mountsStream != null;
-            String line = mountsStream.readLine();
-            while (line != null){
-                lines.add(parseLine(line));
-                line = mountsStream.readLine();
-            }
-
-            for (Mount mount : lines){
-                if ((mount.device.equals("/dev/root") && mount.mountpoint.equals("/")) || (mount.mountpoint.equals("/system_root") && !mount.type.equals("tmpfs"))){
-                    isSAR = true;
-                }
-
-                if (!mount.mountpoint.equals("/system") && mount.type.equals("tmpfs") && mount.device.equals("none")){
-                    isSAR = false;
-                }
-            }
-
-        } else {
-            isSAR = false;
+        String line = mountsStream.readLine();
+        while (line != null){
+            lines.add(parseLine(line));
+            line = mountsStream.readLine();
         }
 
-
-        return isSAR;
-
+        for (Mount mount : lines) {
+            if ((mount.device.equals("/dev/root") && mount.mountpoint.equals("/")) ||
+                    (mount.mountpoint.equals("/system") && !mount.type.equals("tmpfs") && !mount.device.equals("none")) ||
+                    (mount.mountpoint.equals("/system_root") && !mount.type.equals("tmpfs"))) {
+                return true;
+            }
+        }
+    return false;
     }
 
     private static Mount parseLine(String line)throws Exception{
