@@ -25,6 +25,7 @@ import com.hades.hKtweaks.fragments.recyclerview.RecyclerViewFragment;
 import com.hades.hKtweaks.utils.AppSettings;
 import com.hades.hKtweaks.utils.Device;
 import com.hades.hKtweaks.utils.kernel.gpu.GPUFreqExynos;
+import com.hades.hKtweaks.utils.root.RootUtils;
 import com.hades.hKtweaks.views.recyclerview.CardView;
 import com.hades.hKtweaks.views.recyclerview.DescriptionView;
 import com.hades.hKtweaks.views.recyclerview.RecyclerViewItem;
@@ -53,13 +54,19 @@ public class DeviceFragment extends RecyclerViewFragment {
 
     @Override
     protected void addItems(List<RecyclerViewItem> items) {
-
         int ram = (int) Device.MemInfo.getInstance().getTotalMem();
         String features = Device.CPUInfo.getInstance().getFeatures();
+        String issar;
+        try{
+            issar = (RootUtils.isSAR()) ? getString(R.string.yes) : getString(R.string.no);
+        } catch (Exception e){
+            issar = getString(R.string.not_available);
+        }
         String[][] deviceInfos = {
                 {getString(R.string.manufactured_date), Device.getManufacturedDate()},
                 {getString(R.string.android_version), Device.getVersion()},
                 {getString(R.string.android_api_level), String.valueOf(Device.getSDK())},
+                {getString(R.string.sar), issar},
                 {getString(R.string.android_codename), Device.getCodename()},
                 {getString(R.string.fingerprint), Device.getFingerprint()},
                 {getString(R.string.build_display_id), Device.getBuildDisplayId()},

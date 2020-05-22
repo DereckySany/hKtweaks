@@ -146,6 +146,7 @@
 
     <!-- Device -->
     <string name="manufactured_date">Manufacturing Date</string>
+    <string name="sar">System as root</string>
     <string name="processor">Processor</string>
     <string name="vendor">Vendor</string>
     <string name="features">Features</string>
@@ -1230,6 +1231,10 @@
     <string name="disable_question">Disable %s?</string>
 
     <!-- Settings -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="not_supported">Not supported</string>
+    <string name="not_available">Not available</string>
     <string name="open_settings">Open Settings</string>
     <string name="general">General</string>
     <string name="reset_data_title">Restore application</string>
